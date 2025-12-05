@@ -1,0 +1,116 @@
+# Advanced Il2Cpp Dumper Configuration
+
+logging:
+  level: INFO  # DEBUG, INFO, WARNING, ERROR, CRITICAL
+  file: dumper.log
+  console: true
+
+analysis:
+  deep_scan: true
+  find_string_references: true
+  detect_encryption: true
+  extract_method_bodies: false
+  analyze_type_hierarchy: true
+  find_virtual_functions: true
+  cross_reference_strings: true
+  
+  pattern_scans:
+    - "ENCRYPTION_PATTERNS"
+    - "ANTI_CHEAT_PATTERNS"
+    - "GAME_LOGIC_PATTERNS"
+    - "NETWORKING_PATTERNS"
+
+plugins:
+  auto_load: true
+  enabled:
+    - "string_decryptor"
+    - "obfuscation_detector"
+    - "sdk_generator"
+    - "cheat_engine"
+    - "pattern_scanner"
+    - "metadata_validator"
+    
+  plugin_configs:
+    string_decryptor:
+      auto_decrypt: true
+      brute_force_keys: true
+      known_keys: [0x55, 0xAA, 0xFF]
+      
+    cheat_engine:
+      generate_templates: true
+      include_examples: true
+      target_platform: "ANDROID"  # ANDROID, IOS, WINDOWS
+
+output:
+  formats:
+    - "cs"
+    - "json"
+    - "ida_python"
+    - "cheat_engine"
+    - "ghidra"
+    - "radare"
+    
+  include_offsets: true
+  include_strings: true
+  include_method_bodies: false
+  generate_sdk: true
+  generate_hook_templates: true
+  
+  sdk_languages:
+    - "csharp"
+    - "cpp"
+    - "python"
+    
+hooking:
+  enable: false
+  target_process: null
+  inject_dll: false
+  
+  hook_types:
+    - "DETOUR"
+    - "INLINE"
+    - "VTABLE"
+    
+  auto_hook_functions:
+    - "il2cpp_string_new"
+    - "il2cpp_method_get_name"
+    - "Player::Update"
+    - "GameManager::AddScore"
+
+# Advanced settings
+advanced:
+  use_multithreading: true
+  thread_count: 4
+  cache_results: true
+  max_file_size_mb: 500
+  
+  elf_parsing:
+    parse_symbols: true
+    parse_sections: true
+    find_relocations: true
+    
+  pe_parsing:
+    parse_exports: true
+    parse_imports: true
+    parse_resources: true
+
+# Game-specific configurations
+game_profiles:
+  unity_versions:
+    - "2019.4"
+    - "2020.3"
+    - "2021.3"
+    - "2022.3"
+    
+  common_classes:
+    - "GameManager"
+    - "PlayerController"
+    - "UIManager"
+    - "NetworkManager"
+    - "AchievementManager"
+    
+  cheat_patterns:
+    health: "Player.*Health"
+    score: "GameManager.*Score|Player.*Score"
+    currency: ".*Currency|.*Coins|.*Gold"
+    ammo: ".*Ammo|.*Bullets"
